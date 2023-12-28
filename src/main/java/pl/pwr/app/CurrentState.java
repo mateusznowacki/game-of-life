@@ -3,6 +3,8 @@ package pl.pwr.app;
 import pl.pwr.cell.CellState;
 import pl.pwr.map.Map;
 
+import java.util.ArrayList;
+
 public class CurrentState {
     private static CurrentState instance;
     private Map map;
@@ -10,6 +12,33 @@ public class CurrentState {
     private int columns;
     private int iterations;
     private int liveCellsCount;
+    private int numberOfThreads;
+    private String filePath;
+    private ArrayList<Map> dividedMaps;
+
+    public ArrayList<Map> getDividedMaps() {
+        return dividedMaps;
+    }
+
+    public void setDividedMaps(ArrayList<Map> dividedMaps) {
+        this.dividedMaps = dividedMaps;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public int getNumberOfThreads() {
+        return numberOfThreads;
+    }
+
+    public void setNumberOfThreads(int numberOfThreads) {
+        this.numberOfThreads = numberOfThreads;
+    }
 
     public Map getMap() {
         return map;

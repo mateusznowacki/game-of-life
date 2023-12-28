@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataParser {
     public void parseData(String filePath) {
@@ -29,7 +28,7 @@ public class DataParser {
 
             }
             Map map = new Map(currentState.getRows(), currentState.getColumns());
-            map.setMap(liveCells);
+            map.initializeMap(liveCells);
             currentState.setMap(map);
 
         } catch (IOException | NumberFormatException e) {
