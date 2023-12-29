@@ -1,4 +1,4 @@
-package pl.pwr.map;
+package pl.pwr.mapmodel;
 
 public class CellCoordinates {
     private int row;

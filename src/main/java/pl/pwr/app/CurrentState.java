@@ -1,7 +1,6 @@
 package pl.pwr.app;
 
-import pl.pwr.cell.CellState;
-import pl.pwr.map.Map;
+import pl.pwr.mapmodel.Map;
 
 import java.util.ArrayList;
 

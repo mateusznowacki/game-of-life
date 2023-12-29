@@ -1,8 +1,8 @@
 package pl.pwr.inputs;
 
 import pl.pwr.app.CurrentState;
-import pl.pwr.map.CellCoordinates;
-import pl.pwr.map.Map;
+import pl.pwr.mapmodel.CellCoordinates;
+import pl.pwr.mapmodel.Map;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package pl.pwr.map;
+package pl.pwr.mapmodel;
 
 import pl.pwr.cell.CellState;
 
@@ -23,7 +23,14 @@ public class Map {
         this.map = new CellState[rows][columns];
     }
 
+    public Map() {
+
+    }
+
     public void setValue(int row, int col, CellState value) {
+        map[row % rows][col % columns] = value;
+    }
+    public void setCellState(CellState[][] map,int row, int col, CellState value) {
         map[row % rows][col % columns] = value;
     }
 
@@ -45,16 +52,15 @@ public class Map {
     public void printMap() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if(getValue(i,j) == CellState.ALIVE){
-                    System.out.print("X ");}
-                else{
+                if (getValue(i, j) == CellState.ALIVE) {
+                    System.out.print("X ");
+                } else {
                     System.out.print("O ");
                 }
             }
             System.out.println();
         }
     }
-
 
 
 }
