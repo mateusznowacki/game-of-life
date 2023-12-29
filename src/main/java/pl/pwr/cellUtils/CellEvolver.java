@@ -1,8 +1,8 @@
-package pl.pwr.cell;
+package pl.pwr.cellUtils;
 
-import pl.pwr.mapmodel.Map;
+import pl.pwr.mapUtils.TorusMap;
 
-public class LifeCycle {
+public class CellEvolver {
 
     public int countAliveNeighbours(CellState[][] map, int row, int column, int rows, int columns) {
         int aliveNeighbours = 0;
@@ -29,7 +29,7 @@ public class LifeCycle {
     }
 
     public CellState[][] changeCellState(CellState[][] map, int row, int column, int rows, int columns) {
-        Map mapSetter = new Map();
+        TorusMap mapSetter = new TorusMap();
         int aliveNeighbours = countAliveNeighbours(map, row, column, rows, columns);
 
         // Zasady gry w życie

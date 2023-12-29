@@ -1,8 +1,8 @@
 package pl.pwr.inputs;
 
 import pl.pwr.app.CurrentState;
-import pl.pwr.mapmodel.CellCoordinates;
-import pl.pwr.mapmodel.Map;
+import pl.pwr.mapUtils.CellCoordinates;
+import pl.pwr.mapUtils.TorusMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +27,7 @@ public class DataParser {
                 liveCells.add(new CellCoordinates(x, y));
 
             }
-            Map map = new Map(currentState.getRows(), currentState.getColumns());
+            TorusMap map = new TorusMap(currentState.getRows(), currentState.getColumns());
             map.initializeMap(liveCells);
             currentState.setMap(map);
 

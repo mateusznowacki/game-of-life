@@ -1,25 +1,25 @@
 package pl.pwr.app;
 
-import pl.pwr.mapmodel.Map;
+import pl.pwr.mapUtils.TorusMap;
 
 import java.util.ArrayList;
 
 public class CurrentState {
     private static CurrentState instance;
-    private Map map;
+    private TorusMap map;
     private int rows;
     private int columns;
     private int iterations;
     private int liveCellsCount;
     private int numberOfThreads;
     private String filePath;
-    private ArrayList<Map> dividedMaps;
+    private ArrayList<TorusMap> dividedMaps;
 
-    public ArrayList<Map> getDividedMaps() {
+    public ArrayList<TorusMap> getDividedMaps() {
         return dividedMaps;
     }
 
-    public void setDividedMaps(ArrayList<Map> dividedMaps) {
+    public void setDividedMaps(ArrayList<TorusMap> dividedMaps) {
         this.dividedMaps = dividedMaps;
     }
 
@@ -39,11 +39,11 @@ public class CurrentState {
         this.numberOfThreads = numberOfThreads;
     }
 
-    public Map getMap() {
+    public TorusMap getMap() {
         return map;
     }
 
-    public void setMap(Map map) {
+    public void setMap(TorusMap map) {
         this.map = map;
     }
 

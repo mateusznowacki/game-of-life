@@ -1,13 +1,17 @@
-package pl.pwr.mapmodel;
+package pl.pwr.mapUtils;
 
-import pl.pwr.cell.CellState;
+import pl.pwr.cellUtils.CellState;
 
 import java.util.ArrayList;
 
-public class Map {
+public class TorusMap {
     private int rows;
     private int columns;
     private CellState[][] map;
+
+    public CellState[][] getMap() {
+        return map;
+    }
 
     public int getRows() {
         return rows;
@@ -17,13 +21,13 @@ public class Map {
         return columns;
     }
 
-    public Map(int rows, int columns) {
+    public TorusMap(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.map = new CellState[rows][columns];
     }
 
-    public Map() {
+    public TorusMap() {
 
     }
 

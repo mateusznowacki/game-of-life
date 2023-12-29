@@ -1,12 +1,10 @@
-package pl.pwr.app;
-
-import pl.pwr.mapmodel.Map;
+package pl.pwr.mapUtils;
 
 import java.util.ArrayList;
 
 public class MapManager {
-    public ArrayList<Map> divideMapByThreads(Map map, int columns, int rows, int threadsNumber) {
-        ArrayList<Map> dividedMaps = new ArrayList<>();
+    public synchronized ArrayList<TorusMap> divideMapByThreads(TorusMap map, int columns, int rows, int threadsNumber) {
+        ArrayList<TorusMap> dividedMaps = new ArrayList<>();
 
         // Oblicz liczbę kolumn na każdy wątek
         int columnsPerThread = columns / threadsNumber;
@@ -26,7 +24,7 @@ public class MapManager {
             // int endIndex = startIndex + columnsPerThread + (i < remainingColumns ? 1 : 0);
 
             // Twórz podmapę dla bieżącego wątku
-            Map subMap = new Map(rows, endIndex - startIndex);
+            TorusMap subMap = new TorusMap(rows, endIndex - startIndex);
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < subMap.getColumns(); col++) {
                     subMap.setValue(row, col, map.getValue(row, startIndex + col));
@@ -43,11 +41,11 @@ public class MapManager {
         return dividedMaps;
     }
 
-    public Map mergeMaps(ArrayList<Map> dividedMaps, int rows, int columns) {
-        Map mergedMap = new Map(rows, columns);
+    public TorusMap mergeMaps(ArrayList<TorusMap> dividedMaps, int rows, int columns) {
+        TorusMap mergedMap = new TorusMap(rows, columns);
 
         int startIndex = 0;
-        for (Map subMap : dividedMaps) {
+        for (TorusMap subMap : dividedMaps) {
             int subMapColumns = subMap.getColumns();
 
             // Skopiuj zawartość podmapy do docelowej mapy

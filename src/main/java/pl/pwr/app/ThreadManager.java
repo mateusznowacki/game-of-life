@@ -1,8 +1,5 @@
 package pl.pwr.app;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-
 public class ThreadManager {
 
     private int numberOfThreads;
