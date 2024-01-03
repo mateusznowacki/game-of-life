@@ -1,6 +1,7 @@
 package pl.pwr.mapUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapManager {
     public synchronized ArrayList<TorusMap> divideMapByThreads(TorusMap map, int columns, int rows, int threadsNumber) {
@@ -20,8 +21,6 @@ public class MapManager {
                 endIndex++;
                 remainingColumns--;
             }
-            // TODO: poprawić
-            // int endIndex = startIndex + columnsPerThread + (i < remainingColumns ? 1 : 0);
 
             // Twórz podmapę dla bieżącego wątku
             TorusMap subMap = new TorusMap(rows, endIndex - startIndex);
@@ -41,7 +40,7 @@ public class MapManager {
         return dividedMaps;
     }
 
-    public TorusMap mergeMaps(ArrayList<TorusMap> dividedMaps, int rows, int columns) {
+    public synchronized TorusMap mergeMaps(List<TorusMap> dividedMaps, int rows, int columns) {
         TorusMap mergedMap = new TorusMap(rows, columns);
 
         int startIndex = 0;

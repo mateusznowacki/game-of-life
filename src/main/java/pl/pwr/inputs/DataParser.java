@@ -1,6 +1,7 @@
 package pl.pwr.inputs;
 
-import pl.pwr.app.CurrentState;
+import pl.pwr.app.CurrentGameData;
+import pl.pwr.app.MapHolder;
 import pl.pwr.mapUtils.CellCoordinates;
 import pl.pwr.mapUtils.TorusMap;
 
@@ -12,14 +13,14 @@ import java.util.ArrayList;
 public class DataParser {
     public void parseData(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            CurrentState currentState = CurrentState.getInstance();
-            currentState.setRows(Integer.parseInt(reader.readLine().trim()));
-            currentState.setColumns(Integer.parseInt(reader.readLine().trim()));
-            currentState.setIterations(Integer.parseInt(reader.readLine().trim()));
-            currentState.setLiveCellsCount(Integer.parseInt(reader.readLine().trim()));
+            CurrentGameData currentGameData = CurrentGameData.getInstance();
+            currentGameData.setRows(Integer.parseInt(reader.readLine().trim()));
+            currentGameData.setColumns(Integer.parseInt(reader.readLine().trim()));
+            currentGameData.setIterations(Integer.parseInt(reader.readLine().trim()));
+           int liveCellsNumber = (Integer.parseInt(reader.readLine().trim()));
 
             ArrayList<CellCoordinates> liveCells = new ArrayList<>();
-            for (int i = 0; i < currentState.getLiveCellsCount(); i++) {
+            for (int i = 0; i < liveCellsNumber; i++) {
                 String line = reader.readLine();
                 String[] coordinates = line.split(" ");
                 int x = Integer.parseInt(coordinates[0]);
@@ -27,9 +28,10 @@ public class DataParser {
                 liveCells.add(new CellCoordinates(x, y));
 
             }
-            TorusMap map = new TorusMap(currentState.getRows(), currentState.getColumns());
+            TorusMap map = new TorusMap(currentGameData.getRows(), currentGameData.getColumns());
             map.initializeMap(liveCells);
-            currentState.setMap(map);
+           // currentGameData.setMap(map);
+            MapHolder.getInstance().setMap(map);
 
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();

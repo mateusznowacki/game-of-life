@@ -2,25 +2,26 @@ package pl.pwr.app;
 
 import pl.pwr.mapUtils.TorusMap;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CurrentState {
-    private static CurrentState instance;
+public class CurrentGameData {
+    private static CurrentGameData instance;
     private TorusMap map;
     private int rows;
     private int columns;
     private int iterations;
-    private int liveCellsCount;
+    //private int liveCellsCount;
     private int numberOfThreads;
     private String filePath;
-    private ArrayList<TorusMap> dividedMaps;
+    private CopyOnWriteArrayList<TorusMap> dividedMaps;
 
-    public ArrayList<TorusMap> getDividedMaps() {
+    public synchronized CopyOnWriteArrayList<TorusMap> getDividedMaps() {
         return dividedMaps;
     }
 
-    public void setDividedMaps(ArrayList<TorusMap> dividedMaps) {
-        this.dividedMaps = dividedMaps;
+    public synchronized void setDividedMaps(List<TorusMap> dividedMaps) {
+        this.dividedMaps = new CopyOnWriteArrayList<>(dividedMaps);
     }
 
     public String getFilePath() {
@@ -39,21 +40,21 @@ public class CurrentState {
         this.numberOfThreads = numberOfThreads;
     }
 
-    public TorusMap getMap() {
+    public synchronized TorusMap getMap() {
         return map;
     }
 
-    public void setMap(TorusMap map) {
+    public synchronized void setMap(TorusMap map) {
         this.map = map;
     }
 
-    public int getLiveCellsCount() {
-        return liveCellsCount;
-    }
-
-    public void setLiveCellsCount(int liveCellsCount) {
-        this.liveCellsCount = liveCellsCount;
-    }
+//    public int getLiveCellsCount() {
+//        return liveCellsCount;
+//    }
+//
+//    public void setLiveCellsCount(int liveCellsCount) {
+//        this.liveCellsCount = liveCellsCount;
+//    }
 
     public int getRows() {
         return rows;
@@ -79,11 +80,12 @@ public class CurrentState {
         this.iterations = iterations;
     }
 
-    private CurrentState() {
+    private CurrentGameData() {
     }
-    public static synchronized CurrentState getInstance() {
+
+    public static synchronized CurrentGameData getInstance() {
         if (instance == null) {
-            instance = new CurrentState();
+            instance = new CurrentGameData();
         }
         return instance;
     }

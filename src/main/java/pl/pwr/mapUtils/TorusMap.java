@@ -9,6 +9,14 @@ public class TorusMap {
     private int columns;
     private CellState[][] map;
 
+    public TorusMap(TorusMap torusMap) {
+        this.rows = torusMap.getRows();
+        this.columns = torusMap.getColumns();
+        this.map = torusMap.getMap();
+
+    }
+
+
     public CellState[][] getMap() {
         return map;
     }
@@ -31,10 +39,11 @@ public class TorusMap {
 
     }
 
-    public void setValue(int row, int col, CellState value) {
+    public synchronized void setValue(int row, int col, CellState value) {
         map[row % rows][col % columns] = value;
     }
-    public void setCellState(CellState[][] map,int row, int col, CellState value) {
+
+    public synchronized void setCellState(CellState[][] map, int row, int col, CellState value) {
         map[row % rows][col % columns] = value;
     }
 

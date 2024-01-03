@@ -8,7 +8,7 @@ public class ConsolePrinter {
     }
 
 
-    public void printConfigurationInfo(int numberOfThreads) {
+    public static void printConfigurationInfo(int numberOfThreads) {
         System.out.println("Number of available threads: " + numberOfThreads + " column-based partitioning");
     }
 

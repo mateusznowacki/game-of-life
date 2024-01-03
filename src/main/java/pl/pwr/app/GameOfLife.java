@@ -6,91 +6,68 @@ import pl.pwr.mapUtils.MapManager;
 import pl.pwr.inputs.DataParser;
 import pl.pwr.inputs.FileValidator;
 import pl.pwr.mapUtils.TorusMap;
-import pl.pwr.outputs.ConsolePrinter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.stream.Collectors;
-
-public class GameOfLife {
-
-    private int numberOfThreads;
-    private final int iterations;
-    private final CyclicBarrier barrier;
-    private Thread[] threads;
 
 
-    public GameOfLife(int numberOfThreads, int iterations) {
-        this.numberOfThreads = numberOfThreads;
-        this.iterations = iterations;
-        this.barrier = new CyclicBarrier(numberOfThreads);
+public class GameOfLife implements Runnable {
+
+    private final CyclicBarrier entryBarrier;
+    private final CyclicBarrier exitBarrier;
+    private int threadIndex;
+
+    public GameOfLife(CyclicBarrier entryBarrier, CyclicBarrier exitBarrier, int threadIndex) {
+        this.entryBarrier = entryBarrier;
+        this.exitBarrier = exitBarrier;
+        this.threadIndex = threadIndex;
     }
 
-    public void initializeGameData() {
-        CurrentState currentState = CurrentState.getInstance();
-
-        FileValidator fileValidator = new FileValidator();
-        fileValidator.validateFile(currentState.getFilePath());
-
-        DataParser dataParser = new DataParser();
-        dataParser.parseData(currentState.getFilePath());
-
-        currentState.setDividedMaps(new ArrayList<>());
-
-        ThreadManager threadManager = new ThreadManager(numberOfThreads);
-        threads = threadManager.createThreads();
+    public GameOfLife() {
+        this.entryBarrier = null;
+        this.exitBarrier = null;
     }
 
-    public void startGame() {
+    @Override
+    public void run() {
+        try {
+            //  for (int iteration = 0; iteration < 100; iteration++) {
+            // Oczekiwanie na pozostałe wątki przed rozpoczęciem pracy
+            entryBarrier.await();
 
-        MapManager mapManager = new MapManager();
-        CurrentState currentState = CurrentState.getInstance();
-        ConsolePrinter printer = new ConsolePrinter();
+            // Tutaj wykonaj pracę na podstawie wprowadzonych zmian z poprzedniej iteracji
+            // evolveCells(CurrentGameData.getInstance().getDividedMaps().get(threadIndex));
+            evolveCells(MapHolder.getInstance().getDividedMaps().get(threadIndex));
 
-        printer.printConfigurationInfo(numberOfThreads);
-
-        for (int i = 0; i < 100; i++) {
-            printer.printCurrentIterationNumber(i);
-            ArrayList<TorusMap> dividedMaps = mapManager.divideMapByThreads(currentState.getMap(), currentState.getColumns(), currentState.getRows(), numberOfThreads);
-
-            for (int j = 0; j < numberOfThreads; j++) {
-                int index = j;
-                threads[j] = new Thread(() -> evolveCells(dividedMaps.get(index), currentState, printer, index));
-                threads[j].start();
-            }
-            // Czekanie na zakończenie ewolucji komórek w danym kroku
-            for (Thread thread : threads) {
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Synchronizacja na barierze przed przejściem do następnego kroku
-            try {
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
-            }
-
-
-            currentState.setMap(mapManager.mergeMaps(dividedMaps, currentState.getMap().getRows(), currentState.getMap().getColumns()));
-
-
+            // Oczekiwanie na pozostałe wątki przed zakończeniem iteracji
+            exitBarrier.await();
+            //  }
+        } catch (InterruptedException | BrokenBarrierException e) {
+            e.printStackTrace();
         }
     }
 
-    private synchronized void evolveCells(TorusMap map, CurrentState currentState, ConsolePrinter printer, int index) {
-        // ArrayList<TorusMap> dividedMaps = new ArrayList<>(currentState.getDividedMaps());
+    public void initializeGameData() {
+        CurrentGameData currentGameData = CurrentGameData.getInstance();
+
+        FileValidator fileValidator = new FileValidator();
+        fileValidator.validateFile(currentGameData.getFilePath());
+
+        DataParser dataParser = new DataParser();
+        dataParser.parseData(currentGameData.getFilePath());
+
+        MapManager mapManager = new MapManager();
+        //currentGameData.setDividedMaps(mapManager.divideMapByThreads(currentGameData.getMap(), currentGameData.getColumns(),
+        //    currentGameData.getRows(), currentGameData.getNumberOfThreads()));
+
+        MapHolder mapHolder = MapHolder.getInstance();
+        mapHolder.setDividedMaps(mapManager.divideMapByThreads(mapHolder.getMap(), currentGameData.getColumns(),
+                currentGameData.getRows(), currentGameData.getNumberOfThreads()));
+
+    }
 
 
-        List<TorusMap> mapsCopy = currentState.getDividedMaps().stream()
-                .collect(Collectors.toList());
-        mapsCopy.remove(index);
-        currentState.getDividedMaps().clear();
+    private synchronized void evolveCells(TorusMap map) {
 
         CellEvolver cellEvolver = new CellEvolver();
         int rows = map.getRows();
@@ -103,6 +80,7 @@ public class GameOfLife {
                 if (map.getValue(i, j) == CellState.ALIVE) {
                     if (aliveNeighbours == 2 || aliveNeighbours == 3) {
                         updatedMap.setValue(i, j, CellState.ALIVE);
+
                     } else {
                         updatedMap.setValue(i, j, CellState.DEAD);
                     }
@@ -115,12 +93,14 @@ public class GameOfLife {
                 }
             }
         }
-        printer.printThreadInfo((int) Thread.currentThread().getId(), rows, rows, columns, columns);
+        synchronized (MapHolder.getInstance().getDividedMaps()) {
+            MapHolder.getInstance().getDividedMaps().set(threadIndex, updatedMap);
+        }
+      //  MapHolder.getInstance().getDividedMaps().set(threadIndex, updatedMap);
+      //  CurrentGameData.getInstance().getDividedMaps().set(threadIndex, updatedMap);
+        //  CurrentState.getInstance().setMap(updatedMap);
+      //  updatedMap.printMap();
 
-        mapsCopy.add(updatedMap);
-        //dodanie zaktualizowanej mapy do listy
-        currentState.getDividedMaps().addAll(mapsCopy);
     }
-
 }
 
