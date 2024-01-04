@@ -18,7 +18,9 @@ public class Main {
 
     private static void runGame() {
         CurrentGameData currentGameData = CurrentGameData.getInstance();
-        ThreadManager threadManager = new ThreadManager(currentGameData.getNumberOfThreads(), MapHolder.getInstance().getMap());
+        MapHolder mapHolder = MapHolder.getInstance();
+        ThreadManager threadManager = new ThreadManager(currentGameData.getNumberOfThreads(),
+                mapHolder.getMap(), mapHolder.getDividedMaps(), currentGameData.getIterations());
         threadManager.startThreads();
 
         // Oczekiwanie na zakończenie wszystkich wątków

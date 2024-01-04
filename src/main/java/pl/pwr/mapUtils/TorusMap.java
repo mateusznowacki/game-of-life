@@ -74,6 +74,15 @@ public class TorusMap {
         }
     }
 
+    public int getArrayRows() {
+        return map.length;
+    }
+    public int getArrayColumns() {
+        return map[0].length;
+    }
+
+
+
     public void printMap() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {

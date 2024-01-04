@@ -16,39 +16,30 @@ public class MapHolder {
     private int rows;
     private int columns;
     private CopyOnWriteArrayList<TorusMap> dividedMaps;
-    private int liveCellsCount;
     private final ReadWriteLock mapLock = new ReentrantReadWriteLock();
-
 
     public int getRows() {
         return rows;
     }
+
     public void setRows(int rows) {
         this.rows = rows;
     }
+
     public int getColumns() {
         return columns;
     }
+
     public void setColumns(int columns) {
         this.columns = columns;
     }
 
     public CopyOnWriteArrayList<TorusMap> getDividedMaps() {
-//        mapLock.r.lock();
-//        try {
-            return dividedMaps;
-//        } finally {
-//            mapLock.unlock();
-//        }
+        return dividedMaps;
     }
 
     public void setDividedMaps(CopyOnWriteArrayList<TorusMap> dividedMaps) {
-//        mapLock.lock();
-//        try {
-            this.dividedMaps = new CopyOnWriteArrayList<>(dividedMaps);
-//        } finally {
-//            mapLock.unlock();
-//        }
+        this.dividedMaps = new CopyOnWriteArrayList<>(dividedMaps);
     }
 
 
@@ -59,7 +50,6 @@ public class MapHolder {
         } finally {
             mapLock.readLock().unlock();
         }
-
     }
 
     public void setMap(TorusMap map) {
@@ -69,15 +59,6 @@ public class MapHolder {
         } finally {
             mapLock.writeLock().unlock();
         }
-
-    }
-
-    public int getLiveCellsCount() {
-        return liveCellsCount;
-    }
-
-    public void setLiveCellsCount(int liveCellsCount) {
-        this.liveCellsCount = liveCellsCount;
     }
 
     private MapHolder() {
