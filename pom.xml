@@ -13,5 +13,15 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <!-- https://mvnrepository.com/artifact/com.diogonunes/JColor -->
+    <dependencies>
+    <dependency>
+        <groupId>com.diogonunes</groupId>
+        <artifactId>JColor</artifactId>
+        <version>5.5.1</version>
+    </dependency>
+    </dependencies>
+
+
 
 </project>
