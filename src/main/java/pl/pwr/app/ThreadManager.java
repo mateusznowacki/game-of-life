@@ -14,15 +14,15 @@ public class ThreadManager {
     private final List<Thread> threads;
     private final CyclicBarrier entryBarrier;
     private final CyclicBarrier exitBarrier;
-    private TorusMap sharedMap;
-    private int iterations;
-    private CopyOnWriteArrayList<TorusMap> dividedMaps;
-    private int j = 0;
+    private final TorusMap sharedMap;
+    private final int iterations;
+    private final CopyOnWriteArrayList<TorusMap> dividedMaps;
+
 
     public ThreadManager(int numberOfThreads, TorusMap initialMap, CopyOnWriteArrayList<TorusMap> dividedMaps, int iterations) {
         this.threads = new ArrayList<>();
-        this.entryBarrier = new CyclicBarrier(numberOfThreads+1);
-        this.exitBarrier = new CyclicBarrier(numberOfThreads+1);
+        this.entryBarrier = new CyclicBarrier(numberOfThreads + 1);
+        this.exitBarrier = new CyclicBarrier(numberOfThreads + 1);
         this.sharedMap = initialMap;
         this.dividedMaps = dividedMaps;
         this.iterations = iterations;
@@ -32,10 +32,10 @@ public class ThreadManager {
 
     private void initializeThreads(int numberOfThreads) {
         ///
-        MapHolder.getInstance().getMap().printMap();
+      //  MapHolder.getInstance().getMap().printMap();
         ///
         for (int i = 0; i < numberOfThreads; i++) {
-            GameLogic gameOfLife = new GameLogic(entryBarrier, exitBarrier, i, dividedMaps.get(i), sharedMap,iterations);
+            GameLogic gameOfLife = new GameLogic(entryBarrier, exitBarrier, i, dividedMaps.get(i), sharedMap, iterations);
             Thread thread = new Thread(gameOfLife::run);
             threads.add(thread);
         }
@@ -48,6 +48,7 @@ public class ThreadManager {
     }
 
     public void waitForAllThreads() throws BrokenBarrierException, InterruptedException {
+
         entryBarrier.await();
         exitBarrier.await();
 
@@ -63,9 +64,8 @@ public class ThreadManager {
                 mapHolder.getRows(),
                 CurrentGameData.getInstance().getNumberOfThreads()
         ));
-        System.out.println("Iteration: " + j++);
-        mapHolder.getMap().printMap();
+
+
 
     }
-
 }

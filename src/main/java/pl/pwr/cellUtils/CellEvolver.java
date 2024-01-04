@@ -22,7 +22,7 @@ public class CellEvolver {
         int aliveNeighbours = 0;
 
         // Sprawdzenie, czy komórka na danym indeksie jest żywa
-        if (map[row][column] == true) {
+        if (map[row][column]) {
             // Jeśli tak, to odejmij ją od liczby żywych sąsiadów pętla doliczy ją ponownie
             aliveNeighbours = -1;
         }
@@ -34,7 +34,7 @@ public class CellEvolver {
                 int torusRow = (i + rows) % rows;
                 int torusCol = (j + columns) % columns;
 
-                if (map[torusRow][torusCol] == true) {
+                if (map[torusRow][torusCol]) {
                     aliveNeighbours++;
                 }
             }

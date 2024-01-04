@@ -4,8 +4,12 @@ import pl.pwr.inputs.DataParser;
 import pl.pwr.inputs.FileValidator;
 
 import pl.pwr.mapUtils.MapManager;
+import pl.pwr.outputs.ConsolePrinter;
 
 import java.util.concurrent.BrokenBarrierException;
+
+import static pl.pwr.outputs.ConsolePrinter.printCurrentIterationNumber;
+import static pl.pwr.outputs.ConsolePrinter.printMap;
 
 public class Main {
 
@@ -19,22 +23,28 @@ public class Main {
     private static void runGame() {
         CurrentGameData currentGameData = CurrentGameData.getInstance();
         MapHolder mapHolder = MapHolder.getInstance();
-        ThreadManager threadManager = new ThreadManager(currentGameData.getNumberOfThreads(),
-                mapHolder.getMap(), mapHolder.getDividedMaps(), currentGameData.getIterations());
-        threadManager.startThreads();
 
-        // Oczekiwanie na zakończenie wszystkich wątków
-        try {
-            threadManager.waitForAllThreads();
 
-        } catch (BrokenBarrierException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; i < 100; i++) {
+            printCurrentIterationNumber(i + 1);
+            printMap(mapHolder.getMap());
+            ThreadManager threadManager = new ThreadManager(currentGameData.getNumberOfThreads(),
+                    mapHolder.getMap(), mapHolder.getDividedMaps(), currentGameData.getIterations());
+
+            threadManager.startThreads();
+
+            // Oczekiwanie na zakończenie wszystkich wątków
+            try {
+                threadManager.waitForAllThreads();
+
+            } catch (BrokenBarrierException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-
-
     }
+
 
     public static void initializeGameData(String[] args) {
         CurrentGameData currentGameData = CurrentGameData.getInstance();

@@ -1,8 +1,8 @@
 package pl.pwr.mapUtils;
 
 public class CellCoordinates {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     public CellCoordinates(int row, int column) {
         this.row = row;

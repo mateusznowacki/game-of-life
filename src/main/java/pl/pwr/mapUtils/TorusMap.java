@@ -6,10 +6,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TorusMap {
-    private int rows;
-    private int columns;
-    private boolean[][] map;
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final int rows;
+    private final int columns;
+    private final boolean[][] map;
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
 
     public TorusMap(TorusMap torusMap) {
@@ -81,20 +81,6 @@ public class TorusMap {
         return map[0].length;
     }
 
-
-
-    public void printMap() {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (getValue(i, j) == true) {
-                    System.out.print("X ");
-                } else {
-                    System.out.print("O ");
-                }
-            }
-            System.out.println();
-        }
-    }
 
 }
 

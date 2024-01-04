@@ -7,15 +7,19 @@ import pl.pwr.mapUtils.TorusMap;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+import static pl.pwr.outputs.ConsolePrinter.printThreadInfo;
+
 public class GameLogic implements Runnable {
 
     private final CyclicBarrier entryBarrier;
     private final CyclicBarrier exitBarrier;
-    private int threadIndex;
-    private TorusMap gameMap;
-    private TorusMap currentMap;
-    private TorusMap nextMap;
-    private int iterations;
+    private final int threadIndex;
+    private final TorusMap gameMap;
+    private final TorusMap currentMap;
+    private final TorusMap nextMap;
+    private final int iterations;
+
+
 
     public GameLogic(CyclicBarrier entryBarrier, CyclicBarrier exitBarrier, int threadIndex, TorusMap initialMap, TorusMap gameMap,int iterations) {
         this.entryBarrier = entryBarrier;
@@ -30,10 +34,11 @@ public class GameLogic implements Runnable {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < iterations; i++) {
+           for (int i = 0; i < iterations; i++) {
                 // Logika gry - ewolucja komórek
                 entryBarrier.await();
                 evolveCells();
+                printThreadInfo(threadIndex, currentMap,MapHolder.getInstance());
                 // Oczekiwanie na rozpoczęcie i zakończenie iteracji przez wszystkie wątki
 
                 exitBarrier.await();
@@ -43,7 +48,7 @@ public class GameLogic implements Runnable {
                 //podmiana mapy na zaktualizowaną
                 MapHolder.getInstance().getDividedMaps().set(threadIndex, currentMap);
 
-            }
+           }
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
@@ -63,17 +68,9 @@ public class GameLogic implements Runnable {
             for (int j = 0; j < currentMap.getColumns(); j++) {
                 int aliveNeighbours = cellEvolver.countAliveNeighbours(threadIndex, i, j, gameMap);
                 if (currentMap.getValue(i, j)) {
-                    if (aliveNeighbours == 2 || aliveNeighbours == 3) {
-                        nextMap.setValue(i, j, true);
-                    } else {
-                        nextMap.setValue(i, j, false);
-                    }
+                    nextMap.setValue(i, j, aliveNeighbours == 2 || aliveNeighbours == 3);
                 } else {
-                    if (aliveNeighbours == 3) {
-                        nextMap.setValue(i, j, true);
-                    } else {
-                        nextMap.setValue(i, j, false);
-                    }
+                    nextMap.setValue(i, j, aliveNeighbours == 3);
                 }
             }
         }
