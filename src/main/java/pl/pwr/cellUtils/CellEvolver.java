@@ -1,14 +1,13 @@
 package pl.pwr.cellUtils;
 
-import pl.pwr.mapUtils.TorusMap;
 
 public class CellEvolver {
 
-    public int countAliveNeighbours(CellState[][] map, int row, int column, int rows, int columns) {
+    public int countAliveNeighbours(boolean[][] map, int row, int column, int rows, int columns) {
         int aliveNeighbours = 0;
 
         // Sprawdzenie, czy komórka na danym indeksie jest żywa
-        if (map[row][column] == CellState.ALIVE) {
+        if (map[row][column] == true) {
             aliveNeighbours--;
         }
 
@@ -19,7 +18,7 @@ public class CellEvolver {
                 int torusRow = (i + rows) % rows;
                 int torusCol = (j + columns) % columns;
 
-                if (map[torusRow][torusCol] == CellState.ALIVE) {
+                if (map[torusRow][torusCol] == true) {
                     aliveNeighbours++;
                 }
             }
@@ -28,21 +27,4 @@ public class CellEvolver {
         return aliveNeighbours;
     }
 
-    public CellState[][] changeCellState(CellState[][] map, int row, int column, int rows, int columns) {
-        TorusMap mapSetter = new TorusMap();
-        int aliveNeighbours = countAliveNeighbours(map, row, column, rows, columns);
-
-        // Zasady gry w życie
-        if (map[row][column] == CellState.ALIVE) {
-            if (aliveNeighbours < 2 || aliveNeighbours > 3) {
-                mapSetter.setCellState(map, row, column, CellState.DEAD);
-
-            }
-        } else {
-            if (aliveNeighbours == 3) {
-                mapSetter.setCellState(map, row, column, CellState.ALIVE);
-            }
-        }
-        return map;
-    }
 }

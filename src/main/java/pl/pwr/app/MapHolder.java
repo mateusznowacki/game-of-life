@@ -4,60 +4,72 @@ import pl.pwr.mapUtils.TorusMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MapHolder {
     private static MapHolder instance;
     private TorusMap gameMap;
-    private ArrayList<TorusMap> dividedMaps;
+    private int rows;
+    private int columns;
+    private CopyOnWriteArrayList<TorusMap> dividedMaps;
     private int liveCellsCount;
-    private final Lock mapLock = new ReentrantLock();
+    private final ReadWriteLock mapLock = new ReentrantReadWriteLock();
 
-    public List<TorusMap> getDividedMaps() {
-        mapLock.lock();
-        try {
+
+    public int getRows() {
+        return rows;
+    }
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+    public int getColumns() {
+        return columns;
+    }
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public CopyOnWriteArrayList<TorusMap> getDividedMaps() {
+//        mapLock.r.lock();
+//        try {
             return dividedMaps;
-        } finally {
-            mapLock.unlock();
-        }
+//        } finally {
+//            mapLock.unlock();
+//        }
     }
 
-    public void setDividedMaps(List<TorusMap> dividedMaps) {
-        mapLock.lock();
-        try {
-            this.dividedMaps = new ArrayList<>(dividedMaps);
-        } finally {
-            mapLock.unlock();
-        }
+    public void setDividedMaps(CopyOnWriteArrayList<TorusMap> dividedMaps) {
+//        mapLock.lock();
+//        try {
+            this.dividedMaps = new CopyOnWriteArrayList<>(dividedMaps);
+//        } finally {
+//            mapLock.unlock();
+//        }
     }
 
-//    public List<TorusMap> getDividedMaps() {
-//        return dividedMaps;
-//    }
-//
-//    public void setDividedMaps(ArrayList<TorusMap> dividedMaps) {
-//        this.dividedMaps = dividedMaps;
-//    }
 
     public TorusMap getMap() {
         try {
-            mapLock.lock();
+            mapLock.readLock().lock();
             return gameMap;
         } finally {
-            mapLock.unlock();
+            mapLock.readLock().unlock();
         }
-       // return gameMap;
+
     }
 
     public void setMap(TorusMap map) {
         try {
-            mapLock.lock();
+            mapLock.writeLock().lock();
             this.gameMap = map;
         } finally {
-            mapLock.unlock();
+            mapLock.writeLock().unlock();
         }
-      //  this.gameMap = map;
+
     }
 
     public int getLiveCellsCount() {

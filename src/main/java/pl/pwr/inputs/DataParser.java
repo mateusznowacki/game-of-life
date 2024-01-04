@@ -14,10 +14,16 @@ public class DataParser {
     public void parseData(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             CurrentGameData currentGameData = CurrentGameData.getInstance();
+            MapHolder mapHolder = MapHolder.getInstance();
+
             currentGameData.setRows(Integer.parseInt(reader.readLine().trim()));
+            mapHolder.setRows(currentGameData.getRows());
+
             currentGameData.setColumns(Integer.parseInt(reader.readLine().trim()));
+            mapHolder.setColumns(currentGameData.getColumns());
+
             currentGameData.setIterations(Integer.parseInt(reader.readLine().trim()));
-           int liveCellsNumber = (Integer.parseInt(reader.readLine().trim()));
+            int liveCellsNumber = (Integer.parseInt(reader.readLine().trim()));
 
             ArrayList<CellCoordinates> liveCells = new ArrayList<>();
             for (int i = 0; i < liveCellsNumber; i++) {
@@ -28,9 +34,8 @@ public class DataParser {
                 liveCells.add(new CellCoordinates(x, y));
 
             }
-            TorusMap map = new TorusMap(currentGameData.getRows(), currentGameData.getColumns());
+            TorusMap map = new TorusMap(mapHolder.getRows(), mapHolder.getColumns());
             map.initializeMap(liveCells);
-           // currentGameData.setMap(map);
             MapHolder.getInstance().setMap(map);
 
         } catch (IOException | NumberFormatException e) {

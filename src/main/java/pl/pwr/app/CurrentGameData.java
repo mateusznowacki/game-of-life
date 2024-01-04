@@ -7,22 +7,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CurrentGameData {
     private static CurrentGameData instance;
-    private TorusMap map;
     private int rows;
     private int columns;
     private int iterations;
-    //private int liveCellsCount;
     private int numberOfThreads;
     private String filePath;
-    private CopyOnWriteArrayList<TorusMap> dividedMaps;
 
-    public synchronized CopyOnWriteArrayList<TorusMap> getDividedMaps() {
-        return dividedMaps;
-    }
-
-    public synchronized void setDividedMaps(List<TorusMap> dividedMaps) {
-        this.dividedMaps = new CopyOnWriteArrayList<>(dividedMaps);
-    }
 
     public String getFilePath() {
         return filePath;
@@ -40,21 +30,13 @@ public class CurrentGameData {
         this.numberOfThreads = numberOfThreads;
     }
 
-    public synchronized TorusMap getMap() {
-        return map;
+    public int getIterations() {
+        return iterations;
     }
 
-    public synchronized void setMap(TorusMap map) {
-        this.map = map;
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
     }
-
-//    public int getLiveCellsCount() {
-//        return liveCellsCount;
-//    }
-//
-//    public void setLiveCellsCount(int liveCellsCount) {
-//        this.liveCellsCount = liveCellsCount;
-//    }
 
     public int getRows() {
         return rows;
@@ -70,14 +52,6 @@ public class CurrentGameData {
 
     public void setColumns(int columns) {
         this.columns = columns;
-    }
-
-    public int getIterations() {
-        return iterations;
-    }
-
-    public void setIterations(int iterations) {
-        this.iterations = iterations;
     }
 
     private CurrentGameData() {

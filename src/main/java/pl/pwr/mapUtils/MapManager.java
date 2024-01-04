@@ -1,11 +1,10 @@
 package pl.pwr.mapUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MapManager {
-    public synchronized ArrayList<TorusMap> divideMapByThreads(TorusMap map, int columns, int rows, int threadsNumber) {
-        ArrayList<TorusMap> dividedMaps = new ArrayList<>();
+    public synchronized CopyOnWriteArrayList<TorusMap> divideMapByThreads(TorusMap map, int columns, int rows, int threadsNumber) {
+        CopyOnWriteArrayList<TorusMap> dividedMaps = new CopyOnWriteArrayList<>();
 
         // Oblicz liczbę kolumn na każdy wątek
         int columnsPerThread = columns / threadsNumber;
@@ -40,7 +39,7 @@ public class MapManager {
         return dividedMaps;
     }
 
-    public synchronized TorusMap mergeMaps(List<TorusMap> dividedMaps, int rows, int columns) {
+    public synchronized TorusMap mergeMaps(CopyOnWriteArrayList<TorusMap> dividedMaps, int rows, int columns) {
         TorusMap mergedMap = new TorusMap(rows, columns);
 
         int startIndex = 0;
