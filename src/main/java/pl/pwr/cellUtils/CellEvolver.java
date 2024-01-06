@@ -1,7 +1,7 @@
 package pl.pwr.cellUtils;
 
 
-import pl.pwr.app.MapHolder;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.TorusMap;
 
 public class CellEvolver {

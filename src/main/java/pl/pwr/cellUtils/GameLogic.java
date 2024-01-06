@@ -1,7 +1,7 @@
-package pl.pwr.app;
+package pl.pwr.cellUtils;
 
 
-import pl.pwr.cellUtils.CellEvolver;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.TorusMap;
 
 import java.util.concurrent.BrokenBarrierException;
@@ -35,11 +35,11 @@ public class GameLogic implements Runnable {
     @Override
     public void run() {
        try {
-           for (int i = 0; i < iterations; i++) {
+       //    for (int i = 0; i < iterations; i++) {
                 // Logika gry - ewolucja komórek
                 entryBarrier.await();
                 evolveCells();
-                printThreadInfo(threadIndex, currentMap,MapHolder.getInstance());
+                printThreadInfo(threadIndex, currentMap, MapHolder.getInstance());
                 // Oczekiwanie na rozpoczęcie i zakończenie iteracji przez wszystkie wątki
                exitBarrier.await();
                 // Kopiowanie stanu do mapy dla następnej iteracji
@@ -47,7 +47,7 @@ public class GameLogic implements Runnable {
                 //podmiana mapy na zaktualizowaną
                 MapHolder.getInstance().getDividedMaps().set(threadIndex, currentMap);
                 printMap(MapHolder.getInstance().getMap());
-           }
+          // }
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }

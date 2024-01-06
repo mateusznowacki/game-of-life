@@ -1,11 +1,8 @@
 package pl.pwr.outputs;
 
 import com.diogonunes.jcolor.Attribute;
-import pl.pwr.app.MapHolder;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.TorusMap;
-
-
-import java.util.Arrays;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 

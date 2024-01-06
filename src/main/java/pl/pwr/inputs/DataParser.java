@@ -1,7 +1,7 @@
 package pl.pwr.inputs;
 
 import pl.pwr.app.CurrentGameData;
-import pl.pwr.app.MapHolder;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.CellCoordinates;
 import pl.pwr.mapUtils.TorusMap;
 

@@ -1,5 +1,7 @@
 package pl.pwr.app;
 
+import pl.pwr.cellUtils.GameLogic;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.MapManager;
 import pl.pwr.mapUtils.TorusMap;
 

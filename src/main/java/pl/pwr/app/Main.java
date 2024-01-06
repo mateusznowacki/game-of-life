@@ -3,6 +3,7 @@ package pl.pwr.app;
 import pl.pwr.inputs.DataParser;
 import pl.pwr.inputs.FileValidator;
 
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.MapManager;
 
 import java.util.concurrent.BrokenBarrierException;
@@ -22,7 +23,7 @@ public class Main {
 
         printConfigurationInfo(currentGameData.getNumberOfThreads());
 
-        printMap(mapHolder.getMap());
+       // printMap(mapHolder.getMap());
         ThreadManager threadManager = new ThreadManager(currentGameData.getNumberOfThreads(),
                 mapHolder.getMap(), mapHolder.getDividedMaps(), currentGameData.getIterations());
 
