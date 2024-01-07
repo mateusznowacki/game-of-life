@@ -1,5 +1,6 @@
 package pl.pwr.app;
 
+import pl.pwr.cellUtils.GameLogic;
 import pl.pwr.mapUtils.MapManager;
 import pl.pwr.mapUtils.TorusMap;
 
@@ -31,9 +32,6 @@ public class ThreadManager {
     }
 
     private void initializeThreads(int numberOfThreads) {
-        ///
-      //  MapHolder.getInstance().getMap().printMap();
-        ///
         for (int i = 0; i < numberOfThreads; i++) {
             GameLogic gameOfLife = new GameLogic(entryBarrier, exitBarrier, i, dividedMaps.get(i), sharedMap, iterations);
             Thread thread = new Thread(gameOfLife::run);
@@ -47,25 +45,12 @@ public class ThreadManager {
         }
     }
 
-    public void waitForAllThreads() throws BrokenBarrierException, InterruptedException {
+    public void waitForThreads() throws BrokenBarrierException, InterruptedException {
 
         entryBarrier.await();
         exitBarrier.await();
 
         MapManager mapManager = new MapManager();
-        MapHolder mapHolder = MapHolder.getInstance();
-        // łączenie zaktualizownaych map
-        mapHolder.setMap(mapManager.mergeMaps(mapHolder.getDividedMaps(), mapHolder.getRows(), mapHolder.getColumns()));
-
-        //podział zaktualizowanej mapy na wątki
-        mapHolder.setDividedMaps(mapManager.divideMapByThreads(
-                mapHolder.getMap(),
-                mapHolder.getColumns(),
-                mapHolder.getRows(),
-                CurrentGameData.getInstance().getNumberOfThreads()
-        ));
-
-
-
+        mapManager.mergeMapsAfterStep();
     }
 }

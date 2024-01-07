@@ -11,14 +11,12 @@ public class TorusMap {
     private final boolean[][] map;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-
     public TorusMap(TorusMap torusMap) {
         this.rows = torusMap.getRows();
         this.columns = torusMap.getColumns();
         this.map = torusMap.getMap();
 
     }
-
 
     public boolean[][] getMap() {
         try {
@@ -77,10 +75,10 @@ public class TorusMap {
     public int getArrayRows() {
         return map.length;
     }
+
     public int getArrayColumns() {
         return map[0].length;
     }
-
 
 }
 

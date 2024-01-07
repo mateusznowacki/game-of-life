@@ -1,7 +1,10 @@
-package pl.pwr.app;
+package pl.pwr.cellUtils;
 
 
+import pl.pwr.app.CurrentGameData;
 import pl.pwr.cellUtils.CellEvolver;
+import pl.pwr.mapUtils.MapHolder;
+import pl.pwr.mapUtils.MapManager;
 import pl.pwr.mapUtils.TorusMap;
 
 import java.util.concurrent.BrokenBarrierException;
@@ -20,8 +23,7 @@ public class GameLogic implements Runnable {
     private final int iterations;
 
 
-
-    public GameLogic(CyclicBarrier entryBarrier, CyclicBarrier exitBarrier, int threadIndex, TorusMap initialMap, TorusMap gameMap,int iterations) {
+    public GameLogic(CyclicBarrier entryBarrier, CyclicBarrier exitBarrier, int threadIndex, TorusMap initialMap, TorusMap gameMap, int iterations) {
         this.entryBarrier = entryBarrier;
         this.exitBarrier = exitBarrier;
         this.threadIndex = threadIndex;
@@ -34,11 +36,11 @@ public class GameLogic implements Runnable {
     @Override
     public void run() {
         try {
-           for (int i = 0; i < iterations; i++) {
+            for (int i = 0; i < iterations; i++) {
                 // Logika gry - ewolucja komórek
                 entryBarrier.await();
                 evolveCells();
-                printThreadInfo(threadIndex, currentMap,MapHolder.getInstance());
+                printThreadInfo(threadIndex, currentMap, MapHolder.getInstance());
                 // Oczekiwanie na rozpoczęcie i zakończenie iteracji przez wszystkie wątki
 
                 exitBarrier.await();
@@ -48,7 +50,7 @@ public class GameLogic implements Runnable {
                 //podmiana mapy na zaktualizowaną
                 MapHolder.getInstance().getDividedMaps().set(threadIndex, currentMap);
 
-           }
+            }
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
@@ -62,7 +64,7 @@ public class GameLogic implements Runnable {
         }
     }
 
-    private void evolveCells() {
+    public void evolveCells() {
         CellEvolver cellEvolver = new CellEvolver();
         for (int i = 0; i < currentMap.getRows(); i++) {
             for (int j = 0; j < currentMap.getColumns(); j++) {
@@ -75,4 +77,5 @@ public class GameLogic implements Runnable {
             }
         }
     }
+
 }
