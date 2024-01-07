@@ -12,6 +12,10 @@ import static pl.pwr.outputs.ConsolePrinter.*;
 
 public class Main {
 
+    //TODO: Należy zaimplementować kilka plików wejściowych demonstrujących działanie aplikacji
+    // (stałe struktury, oscylatory, statki kosmiczne).
+
+
     public static void main(String[] args) {
         initializeGameData(args);
         runGame();
