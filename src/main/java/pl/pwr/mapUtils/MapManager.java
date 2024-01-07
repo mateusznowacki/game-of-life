@@ -1,5 +1,7 @@
 package pl.pwr.mapUtils;
 
+import pl.pwr.app.CurrentGameData;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MapManager {
@@ -59,6 +61,19 @@ public class MapManager {
 
         return mergedMap;
     }
+    public synchronized void mergeMapsAfterStep() {
+        MapManager mapManager = new MapManager();
+        MapHolder mapHolder = MapHolder.getInstance();
+        // łączenie zaktualizownaych map
+        mapHolder.setMap(mapManager.mergeMaps(mapHolder.getDividedMaps(), mapHolder.getRows(), mapHolder.getColumns()));
 
+        //podział zaktualizowanej mapy na wątki
+        mapHolder.setDividedMaps(mapManager.divideMapByThreads(
+                mapHolder.getMap(),
+                mapHolder.getColumns(),
+                mapHolder.getRows(),
+                CurrentGameData.getInstance().getNumberOfThreads()
+        ));
+    }
 
 }

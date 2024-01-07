@@ -1,5 +1,6 @@
 package pl.pwr.app;
 
+import pl.pwr.cellUtils.GameLogic;
 import pl.pwr.mapUtils.MapManager;
 import pl.pwr.mapUtils.TorusMap;
 
@@ -14,9 +15,9 @@ public class ThreadManager {
     private final List<Thread> threads;
     private final CyclicBarrier entryBarrier;
     private final CyclicBarrier exitBarrier;
-    private TorusMap sharedMap;
+    private final TorusMap sharedMap;
     private final int iterations;
-    private CopyOnWriteArrayList<TorusMap> dividedMaps;
+    private final CopyOnWriteArrayList<TorusMap> dividedMaps;
 
 
     public ThreadManager(int numberOfThreads, TorusMap initialMap, CopyOnWriteArrayList<TorusMap> dividedMaps, int iterations) {
@@ -44,27 +45,13 @@ public class ThreadManager {
         }
     }
 
-    public void waitForAllThreads() throws BrokenBarrierException, InterruptedException {
-        System.out.println("Before entryBarrier await");
+    public void waitForThreads() throws BrokenBarrierException, InterruptedException {
+
         entryBarrier.await();
-        System.out.println("After entryBarrier await");
-
-        System.out.println("Before exitBarrier await");
         exitBarrier.await();
-        System.out.println("After exitBarrier await");
-
 
         MapManager mapManager = new MapManager();
-        MapHolder mapHolder = MapHolder.getInstance();
-
-        // łączenie zaktualizownaych map
-        mapHolder.setMap(mapManager.mergeMaps(mapHolder.getDividedMaps(), mapHolder.getRows(), mapHolder.getColumns()));
-        //podział zaktualizowanej mapy na wątki
-        mapHolder.setDividedMaps(mapManager.divideMapByThreads(
-                mapHolder.getMap(),
-                mapHolder.getColumns(),
-                mapHolder.getRows(),
-                CurrentGameData.getInstance().getNumberOfThreads()
-        ));
+        mapManager.mergeMapsAfterStep();
     }
+
 }

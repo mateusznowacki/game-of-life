@@ -1,11 +1,8 @@
 package pl.pwr.outputs;
 
 import com.diogonunes.jcolor.Attribute;
-import pl.pwr.app.MapHolder;
+import pl.pwr.mapUtils.MapHolder;
 import pl.pwr.mapUtils.TorusMap;
-
-
-import java.util.Arrays;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 
@@ -25,10 +22,9 @@ public class ConsolePrinter {
         }
 
         System.out.println("tid: " + threadId +
-                " rows: " + rowStart + ":" + rowEnd + "(" + (rowEnd - rowStart) + ")" +
-                " rolumns: " + columnStart + ":" + columnEnd + "(" + (columnEnd - columnStart+1) + ")");
+                " rows: " + rowStart + ":" + rowEnd + "(" + (rowEnd - rowStart+1) + ")" +
+                " columns: " + columnStart + ":" + columnEnd + "(" + (columnEnd - columnStart+1) + ")");
     }
-
 
     public static synchronized void printMap(TorusMap map) {
         boolean[][] mapArray = map.getMap().clone();
@@ -50,7 +46,7 @@ public class ConsolePrinter {
 
     public static void printCurrentIterationNumber(int iterationNumber) {
         System.out.println("------------------------------------------------");
-        System.out.println("Current iteration number: " + iterationNumber);
+        System.out.println("Iteration number: " + iterationNumber);
     }
 
 
