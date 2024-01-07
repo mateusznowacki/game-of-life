@@ -49,4 +49,5 @@ public class ConsolePrinter {
         System.out.println("Iteration number: " + iterationNumber);
     }
 
+
 }

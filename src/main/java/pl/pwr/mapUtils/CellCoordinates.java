@@ -17,4 +17,5 @@ public class CellCoordinates {
         return column;
     }
 
+
 }

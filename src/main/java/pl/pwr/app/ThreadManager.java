@@ -53,4 +53,5 @@ public class ThreadManager {
         MapManager mapManager = new MapManager();
         mapManager.mergeMapsAfterStep();
     }
+
 }

@@ -75,4 +75,5 @@ public class MapManager {
                 CurrentGameData.getInstance().getNumberOfThreads()
         ));
     }
+
 }
