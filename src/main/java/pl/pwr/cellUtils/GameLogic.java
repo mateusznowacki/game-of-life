@@ -56,12 +56,13 @@ public class GameLogic implements Runnable {
         }
     }
 
-    private void copyNextMapToCurrentMap() {
+    public TorusMap copyNextMapToCurrentMap() {
         for (int i = 0; i < currentMap.getArrayRows(); i++) {
             for (int j = 0; j < currentMap.getArrayColumns(); j++) {
                 currentMap.setValue(i, j, nextMap.getValue(i, j));
             }
         }
+        return currentMap;
     }
 
     public void evolveCells() {

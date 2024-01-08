@@ -2,7 +2,6 @@ package pl.pwr.mapUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TorusMap {
@@ -11,11 +10,10 @@ public class TorusMap {
     private final boolean[][] map;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    public TorusMap(TorusMap torusMap) {
-        this.rows = torusMap.getRows();
-        this.columns = torusMap.getColumns();
-        this.map = torusMap.getMap();
-
+    public TorusMap(int rows, int columns, boolean[][] map) {
+        this.rows = rows;
+        this.columns = columns;
+        this.map = map;
     }
 
     public boolean[][] getMap() {
@@ -78,6 +76,16 @@ public class TorusMap {
 
     public int getArrayColumns() {
         return map[0].length;
+    }
+
+
+    public boolean[][] setTestMap(boolean[][] testMap) {
+        for (int i = 0; i < testMap.length; i++) {
+            for (int j = 0; j < testMap[i].length; j++) {
+                setValue(i, j, testMap[i][j]);
+            }
+        }
+        return testMap;
     }
 
 
